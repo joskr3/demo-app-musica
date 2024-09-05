@@ -1,14 +1,14 @@
-import { Button } from "./components/ui/button"
+import { Route, Switch } from "wouter"
+import Home from "./Home"
+import NotFound from "./NotFound"
 
 const App = () => {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-      <Button>Click me</Button>
-    </>
-
+    <Switch>
+      <Route path="/" component={Home} />
+      {/* Default route in a switch */}
+      <Route component={NotFound} />
+    </Switch>
   )
 }
 
