@@ -4,8 +4,6 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarRadioGroup,
-  MenubarRadioItem,
   MenubarSeparator,
   MenubarShortcut,
   MenubarSub,
@@ -18,7 +16,7 @@ import {
 const NavBar = () => {
   return (
     <nav className="flex flex-10 p-2 border border-solid border-zinc-400">
-      <h1 className="text-pretty italic text-sm mr-6 flex self-center">CodiMusic</h1>
+      <h1 className="text-pretty font-medium text-sm mr-6 flex self-center">CodiMusic</h1>
       <Menubar>
         <MenubarMenu>
           <MenubarTrigger>Archivo</MenubarTrigger>
@@ -29,23 +27,28 @@ const NavBar = () => {
                 <MenubarItem>Playlist</MenubarItem>
               </MenubarSubContent>
             </MenubarSub>
+            <MenubarSeparator />
             <MenubarItem>
-              New Window <MenubarShortcut>⌘N</MenubarShortcut>
+              Abrir Stream Url <MenubarShortcut>⌘N</MenubarShortcut>
             </MenubarItem>
-            <MenubarItem disabled>New Incognito Window</MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem>
+              Cerrar ventana <MenubarShortcut>⌘C</MenubarShortcut>
+            </MenubarItem>
+            {/* <MenubarItem disabled>New Incognito Window</MenubarItem> */}
             <MenubarSeparator />
             <MenubarSub>
-              <MenubarSubTrigger>Nuevo</MenubarSubTrigger>
+              <MenubarSubTrigger>Libreria</MenubarSubTrigger>
               <MenubarSubContent>
-                <MenubarItem>Playlist</MenubarItem>
-                <MenubarItem>Messages</MenubarItem>
-                <MenubarItem>Notes</MenubarItem>
+                <MenubarItem>Actualizar Libreria</MenubarItem>
+                <MenubarItem>Actualizar Genius</MenubarItem>
+                <MenubarItem>Exportar Libreria</MenubarItem>
+                <MenubarItem>Importar Playlist</MenubarItem>
+                <MenubarItem disabled>Exportar Playlist</MenubarItem>
+                <MenubarItem>Mostrar Duplicados</MenubarItem>
+                <MenubarItem>Actualizar Contenido de las caratulas</MenubarItem>
               </MenubarSubContent>
             </MenubarSub>
-            <MenubarSeparator />
-            <MenubarItem>
-              Print... <MenubarShortcut>⌘P</MenubarShortcut>
-            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
