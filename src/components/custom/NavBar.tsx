@@ -15,8 +15,8 @@ import {
 
 const NavBar = () => {
   return (
-    <nav className="flex flex-10 p-2 border border-solid border-zinc-400">
-      <h1 className="text-pretty font-medium text-sm mr-6 flex self-center">CodiMusic</h1>
+    <nav className="flex flex-10 p-2 mb-10">
+      <h1 className="text-pretty font-medium text-2xl md:text-4xl mr-6 flex self-center">CodiMusic</h1>
       <Menubar>
         <MenubarMenu>
           <MenubarTrigger>Archivo</MenubarTrigger>
