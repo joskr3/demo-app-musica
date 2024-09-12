@@ -7,7 +7,7 @@ import { PlusCircledIcon } from "@radix-ui/react-icons"
 const TabsMenu = () => {
   return (
     <div className="flex  justify-between mx-2 my-0 md:my-6 p-2">
-      <Tabs defaultValue="musica" className="w-[400px]">
+      <Tabs defaultValue="musica" className="w-full">
         <TabsList>
           <TabsTrigger value="musica">Musica</TabsTrigger>
           <TabsTrigger value="podcasts">Podcasts</TabsTrigger>
