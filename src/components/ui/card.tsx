@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+//import { motion } from "framer-motion"
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -57,7 +58,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("flex p-6  m-auto justify-center ", className)} {...props} />
+  <div ref={ref} className={cn("flex py-6 px-0  m-auto justify-center ", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
