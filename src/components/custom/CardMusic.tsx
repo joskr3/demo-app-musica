@@ -1,16 +1,19 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card"
-import { motion } from "framer-motion"
+// src/components/custom/CardMusic.tsx
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { motion } from 'framer-motion';
 
-import type { CardMusicProps } from "@/interfaces/ICardMusic"
+interface CardMusicProps {
+  url: string;
+  titulo: string;
+  subtitulo: string;
+  width?: number;
+  height?: number;
+}
 
-const CardMusic = ({ url, titulo, subtitulo, width = 200, height = 200 }: CardMusicProps) => {
+const CardMusic: React.FC<CardMusicProps> = ({ url, titulo, subtitulo, width = 200, height = 200 }) => {
   return (
     <Card>
-      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} >
+      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
         <CardContent>
           <img alt="imagen" src={url} width={width} height={height} className="rounded-lg" />
         </CardContent>
@@ -20,7 +23,7 @@ const CardMusic = ({ url, titulo, subtitulo, width = 200, height = 200 }: CardMu
         <p className="font-thin">{subtitulo}</p>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
-export default CardMusic
+export default CardMusic;
