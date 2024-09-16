@@ -1,57 +1,95 @@
-import { Button } from "../ui/button"
+// src/components/custom/ContentSideBar.tsx
+import { useContext } from 'react';
+import { AppContext } from '@/context/AppContext';
+import { Button } from '../ui/button';
+import { useLocation } from 'wouter';
 
-interface SideBarItemProps {
-  titulo?: string
-  children?: React.ReactNode
-  textoBoton?: string
+
+interface SidebarItemProps {
+  textoBoton: string;
+  icono: React.ReactNode;
+  path?: string;
 }
 
-const SidebarItemSubComponent = ({ textoBoton, children }: SideBarItemProps): React.ReactNode => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ textoBoton, icono, path }) => {
+  const [, navigate] = useLocation();
+
+  const handleClick = () => {
+    if (path) {
+      navigate(path);
+    }
+  };
+
   return (
-    <div>
-      <Button variant="ghost" className="flex self-start">
-        {children}
-        <p className="ml-2">{textoBoton}</p>
-      </Button>
+    <Button variant="ghost" className="flex items-center w-full justify-start" onClick={handleClick}>
+      {icono}
+      <span className="ml-2">{textoBoton}</span>
+    </Button>
+  );
+};
+
+interface SidebarSectionProps {
+  titulo: string;
+  items: SidebarItemProps[];
+}
+
+const SidebarSectionComponent: React.FC<SidebarSectionProps> = ({ titulo, items }) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <h2 className="text-xl font-semibold mb-2">{titulo}</h2>
+      {items.map((item, index) => (
+        <SidebarItem key={index} textoBoton={item.textoBoton} icono={item.icono} />
+      ))}
     </div>
-  )
-}
+  );
+};
 
-const SidebarItemContainer = ({ titulo, children }: SideBarItemProps): React.ReactNode => {
-  return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl">{titulo}</h1>
-      {children}
-    </div>
-  )
-}
+const ContentSideBar: React.FC = () => {
+  const { sidebarSections } = useContext(AppContext);
 
-const Contenedor1 = (): React.ReactNode => {
-  return (
-    <SidebarItemContainer titulo="Descubre">
-      <SidebarItemSubComponent textoBoton="Texto 1">
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.24182 2.32181C3.3919 2.23132 3.5784 2.22601 3.73338 2.30781L12.7334 7.05781C12.8974 7.14436 13 7.31457 13 7.5C13 7.68543 12.8974 7.85564 12.7334 7.94219L3.73338 12.6922C3.5784 12.774 3.3919 12.7687 3.24182 12.6782C3.09175 12.5877 3 12.4252 3 12.25V2.75C3 2.57476 3.09175 2.4123 3.24182 2.32181ZM4 3.57925V11.4207L11.4288 7.5L4 3.57925Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
-      </SidebarItemSubComponent>
-      <SidebarItemSubComponent textoBoton="Texto 2">
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.24182 2.32181C3.3919 2.23132 3.5784 2.22601 3.73338 2.30781L12.7334 7.05781C12.8974 7.14436 13 7.31457 13 7.5C13 7.68543 12.8974 7.85564 12.7334 7.94219L3.73338 12.6922C3.5784 12.774 3.3919 12.7687 3.24182 12.6782C3.09175 12.5877 3 12.4252 3 12.25V2.75C3 2.57476 3.09175 2.4123 3.24182 2.32181ZM4 3.57925V11.4207L11.4288 7.5L4 3.57925Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
-      </SidebarItemSubComponent>
-      <SidebarItemSubComponent textoBoton="Texto 3">
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.24182 2.32181C3.3919 2.23132 3.5784 2.22601 3.73338 2.30781L12.7334 7.05781C12.8974 7.14436 13 7.31457 13 7.5C13 7.68543 12.8974 7.85564 12.7334 7.94219L3.73338 12.6922C3.5784 12.774 3.3919 12.7687 3.24182 12.6782C3.09175 12.5877 3 12.4252 3 12.25V2.75C3 2.57476 3.09175 2.4123 3.24182 2.32181ZM4 3.57925V11.4207L11.4288 7.5L4 3.57925Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
-      </SidebarItemSubComponent>
-    </SidebarItemContainer>
-  )
- }
+  // Función para mapear el nombre del icono a un componente SVG
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'new_releases':
+        return (
+          <svg width="20" height="20" fill="currentColor">
+            {/* SVG correspondiente */}
+          </svg>
+        );
+      case 'trending_up':
+        return (
+          <svg width="20" height="20" fill="currentColor">
+            {/* SVG correspondiente */}
+          </svg>
+        );
+      case 'star':
+        return (
+          <svg width="20" height="20" fill="currentColor">
+            {/* SVG correspondiente */}
+          </svg>
+        );
+      // Agrega más casos según sea necesario
+      default:
+        return (
+          <svg width="20" height="20" fill="currentColor">
+            {/* Icono por defecto */}
+          </svg>
+        );
+    }
+  };
 
+  // Mapear las secciones del sidebar a componentes
+  const sidebarContent = sidebarSections.map((section, index) => {
+    const items = section.items.map((item) => ({
+      textoBoton: item.name,
+      icono: getIconComponent(item.icon),
+      path: item.path,
+    }));
 
-const ContentSideBar = () => {
+    return <SidebarSectionComponent key={index} titulo={section.title} items={items} />;
+  });
 
-  return (
-    <div className="flex  gap-6 flex-col my-6">
-      <Contenedor1 />
-      <Contenedor1 />
-      <Contenedor1 /> 
-    </div>
-  )
-}
+  return <div className="flex flex-col gap-6 my-6">{sidebarContent}</div>;
+};
 
-export default ContentSideBar
+export default ContentSideBar;

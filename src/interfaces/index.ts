@@ -1,4 +1,17 @@
 // src/interfaces/index.ts
+export interface SidebarItem {
+  id: number;
+  name: string;
+  icon: string;
+  path?: string;
+}
+
+export interface SidebarSection {
+  title: string;
+  items: SidebarItem[];
+}
+
+// Tipos existentes
 export interface Playlist {
   id: number;
   name: string;
