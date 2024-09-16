@@ -16,7 +16,7 @@ export interface Playlist {
   id: number;
   name: string;
   description: string;
-  type: string;
+  type: string; // "Playlist" o "Album"
 }
 
 export interface Song {
