@@ -6,7 +6,7 @@ import {
   DrawerHeader,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-// import ContentSideBar from "./ContentSideBar"
+import ContentSideBar from "./ContentSideBar"
 
 const SideBar = () => {
 
@@ -26,7 +26,7 @@ const SideBar = () => {
                 </Button>
               </DrawerClose>
             </DrawerHeader>
-            {/* <ContentSideBar/> */}
+            <ContentSideBar/>
           </div>
         </DrawerContent>
       </Drawer>
