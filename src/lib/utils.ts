@@ -5,10 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-const url = 'http://localhost:8000'
+// const url = 'http://localhost:8000'
 
-// Function to GET data
-async function getData<T>(endpoint: string): Promise<T[]> {
+// Function to GET data -> obtiene los datos de la API
+async function getData<T>(url:string,endpoint: string): Promise<T[]> {
   try {
     const response = await fetch(`${url}/${endpoint}`);
     if (!response.ok) {
@@ -23,7 +23,7 @@ async function getData<T>(endpoint: string): Promise<T[]> {
 }
 
 // Function to POST data
-async function createData<T>(endpoint: string, data: Omit<T, 'id'>): Promise<T | null> {
+async function createData<T>(url: string, endpoint: string, data: Omit<T, 'id'>): Promise<T | null> {
   try {
     const response = await fetch(`${url}/${endpoint}`, {
       method: 'POST',
@@ -44,6 +44,7 @@ async function createData<T>(endpoint: string, data: Omit<T, 'id'>): Promise<T |
 
 // Function to PUT data
 async function updateData<T extends { id: number }>(
+  url: string,
   endpoint: string,
   data: T
 ): Promise<T | null> {

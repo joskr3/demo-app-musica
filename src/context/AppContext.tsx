@@ -18,25 +18,27 @@ const initialValue: AppContextProps = {
   sidebarSections: []
 };
 
+const url = 'http://localhost:8000'
+
 export const AppContext = createContext<AppContextProps>(initialValue);
 
 export const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const { data: songs } = useQuery({
     queryKey: ['songs'],
-    queryFn: () => getData<Song>('songs')
+    queryFn: () => getData<Song>(url,'songs')
   })
   const { data: albums } = useQuery({
     queryKey: ['albums'],
-    queryFn: () => getData<Album>('albums')
+    queryFn: () => getData<Album>(url, 'albums')
   })
   const { data: playlists } = useQuery({
     queryKey: ['playlists'],
-    queryFn: () => getData<Playlist>('playlists')
+    queryFn: () => getData<Playlist>(url, 'playlists')
   })
   const { data: sidebarSections } = useQuery({
     queryKey: ['sidebarSections'],
-    queryFn: () => getData<SidebarSection>('sidebar')
+    queryFn: () => getData<SidebarSection>(url, 'sidebar')
   })
 
   const listaDeCanciones = songs as Song[]
