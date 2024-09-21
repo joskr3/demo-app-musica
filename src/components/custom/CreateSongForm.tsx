@@ -2,8 +2,6 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { AppContext } from '@/context/AppContext';
-import { useContext } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,7 +13,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
+import { createData } from '@/lib/utils';
+import { useMutation } from '@tanstack/react-query';
+import type { Song } from '@/interfaces';
+
 const songSchema = z.object({
+  id: z.number(),
   title: z.string().min(1, 'El título es requerido'),
   description: z.string().min(1, 'La descripción es requerida'),
   artwork_url: z.string().url('Debe ser una URL válida'),
@@ -25,9 +28,16 @@ type SongFormData = z.infer<typeof songSchema>;
 
 const CreateSongForm: React.FC = () => {
   // const { createSong } = useContext(AppContext);
+  // esta mutacion creará una  canción en la API(backend) -> POST - CREACION DE NUEVAS CANCIONES , USANDO  TANSTACK QUERY
+  const mutationCrearData = useMutation({
+    mutationKey: ['createSong'],
+    mutationFn: (data: Song) => createData<Song>('http://localhost:8000/', 'songs', data)
+  })
+
   const form = useForm<SongFormData>({
     resolver: zodResolver(songSchema),
     defaultValues: {
+      id: 2345678190,
       title: '',
       description: '',
       artwork_url: '',
@@ -35,7 +45,7 @@ const CreateSongForm: React.FC = () => {
   });
 
   const onSubmit = async (values: SongFormData) => {
-    await createSong(values);
+    await mutationCrearData.mutateAsync(values);
     form.reset();
   };
 

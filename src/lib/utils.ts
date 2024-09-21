@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -8,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 // const url = 'http://localhost:8000'
 
 // Function to GET data -> obtiene los datos de la API
-async function getData<T>(url:string,endpoint: string): Promise<T[]> {
+async function getData<T>(url: string, endpoint: string): Promise<T[]> {
   try {
     const response = await fetch(`${url}/${endpoint}`);
     if (!response.ok) {
