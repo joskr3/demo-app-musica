@@ -1,3 +1,4 @@
+//import { useMutation } from "@tanstack/react-query";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -5,27 +6,71 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Definimos una interfaz para los argumentos que acepta la función fetcher.
-// Aquí especificamos que la función recibirá un input (URL o Request) y un init opcional.
-interface FetcherArgs {
-  input: RequestInfo; // Puede ser una URL (string) o un objeto Request.
-  init?: RequestInit; // Opcional, contiene opciones adicionales para la solicitud.
+export const url = 'http://127.0.0.1:8000'
+
+// Function to GET data -> obtiene los datos de la API
+async function getData<T>(url: string, endpoint: string): Promise<T[]> {
+  try {
+    const response = await fetch(`${url}/${endpoint}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching ${endpoint}: ${response.statusText}`);
+    }
+    //console.log(response)
+    const data = (await response.json()) as T[];
+    //console.log(data)
+    return data;
+  } catch (error) {
+    console.error(`Error fetching ${endpoint}:`, error);
+    return [];
+  }
 }
 
-// Definimos la función fetcher con un tipo genérico T.
-// T es el tipo de datos que esperamos que retorne la función.
-// Esto nos permite tipar la respuesta JSON que recibimos al usar fetcher.
-export const fetcher = async <T>(...args: [FetcherArgs['input'], FetcherArgs['init']]): Promise<T> => {
-  // Usamos fetch con los argumentos recibidos.
-  const response = await fetch(...args);
-
-  // Validamos si la respuesta fue exitosa antes de intentar parsear el JSON.
-  // Si la respuesta no es exitosa (status code 4xx o 5xx), lanzamos un error con el mensaje correspondiente.
-  if (!response.ok) {
-    throw new Error(`Error en la solicitud: ${response.statusText}`);
+// Function to POST data
+async function createData<T>(url: string, endpoint: string, data: Omit<T, 'id'>): Promise<T | null> {
+  try {
+    const response = await fetch(`${url}/${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`Error creating in ${endpoint}: ${response.statusText}`);
+    }
+    const newData = (await response.json()) as T;
+    return newData;
+  } catch (error) {
+    console.error(`Error creating in ${endpoint}:`, error);
+    return null;
   }
+}
 
-  // Retornamos la respuesta parseada como JSON.
-  // Aquí usamos el tipo genérico T, lo que nos permite especificar el tipo de datos esperado al llamar a fetcher.
-  return response.json() as Promise<T>;
-};
+
+// Function to PUT data
+async function updateData<T extends { id: number }>(
+  url: string,
+  endpoint: string,
+  data: T
+): Promise<T | null> {
+  try {
+    const response = await fetch(`${url}/${endpoint}/${data.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`Error updating in ${endpoint}: ${response.statusText}`);
+    }
+    const updatedData = (await response.json()) as T;
+    return updatedData;
+  } catch (error) {
+    console.error(`Error updating in ${endpoint}:`, error);
+    return null;
+  }
+}
+
+
+export {
+  getData,
+  createData,
+  updateData
+}
