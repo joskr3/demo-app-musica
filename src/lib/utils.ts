@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+//import { useMutation } from "@tanstack/react-query";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const url = 'http://127.0.0.1:8000/'
+export const url = 'http://127.0.0.1:8000'
 
 // Function to GET data -> obtiene los datos de la API
 async function getData<T>(url: string, endpoint: string): Promise<T[]> {
@@ -15,7 +15,9 @@ async function getData<T>(url: string, endpoint: string): Promise<T[]> {
     if (!response.ok) {
       throw new Error(`Error fetching ${endpoint}: ${response.statusText}`);
     }
+    //console.log(response)
     const data = (await response.json()) as T[];
+    console.log(data)
     return data;
   } catch (error) {
     console.error(`Error fetching ${endpoint}:`, error);

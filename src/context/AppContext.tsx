@@ -37,7 +37,7 @@ export const AppProvider: FC<{ children: ReactNode }> = ({ children }) => {
   })
   const { data: sidebarSections } = useQuery({
     queryKey: ['sidebarSections'],
-    queryFn: () => getData<SidebarSection>(url, 'sidebar')
+    queryFn: () => getData<SidebarSection>(url, 'listas')
   })
 
   const listaDeCanciones = songs as Song[]

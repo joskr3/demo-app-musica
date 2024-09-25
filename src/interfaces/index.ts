@@ -21,9 +21,9 @@ export interface Playlist {
 
 export interface Song {
   id: number;
-  title: string;
-  description: string;
-  artwork_url: string;
+  titulo: string;
+  descripcion: string;
+  url_portada: string;
 }
 
 export interface Album {
