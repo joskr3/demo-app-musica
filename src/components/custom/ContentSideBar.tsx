@@ -4,7 +4,7 @@ import { useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { SidebarSection } from '@/interfaces';
-import { getData } from '@/lib/utils';
+import { getData, url } from '@/lib/utils';
 
 
 interface SidebarItemProps {
@@ -49,7 +49,7 @@ const SidebarSectionComponent: React.FC<SidebarSectionProps> = ({ titulo, items 
 const ContentSideBar: React.FC = () => {
   const { isPending, error, data: sidebarSections } = useQuery({
     queryKey: ['sidebarSectionsQuery'],
-    queryFn: () => getData<SidebarSection>('http://localhost:8000', 'sidebar')
+    queryFn: () => getData<SidebarSection>(url, 'sidebar')
   })
 
   if (isPending) return (<>{

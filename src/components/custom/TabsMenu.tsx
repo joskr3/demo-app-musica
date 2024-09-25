@@ -5,13 +5,14 @@ import { PlusCircledIcon } from "@radix-ui/react-icons"
 import type { Song } from "@/interfaces"
 import { useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
+import { url } from "@/lib/utils"
 
 const TabsMenu = () => {
   const { isPending, error, data: songs } = useQuery({
     queryKey: ['songs'],
     queryFn: async () => {
       const response = await fetch(
-        'http://localhost:8000/songs',
+        url,
       )
       return await response.json()
     },

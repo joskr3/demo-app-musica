@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode } from 'react';
 import type { Album, Playlist, SidebarSection, Song } from '@/interfaces';
 import { useQuery } from "@tanstack/react-query"
-import { getData } from '@/lib/utils';
+import { getData, url } from '@/lib/utils';
 // import { toast } from "sonner"
 
 interface AppContextProps {
@@ -18,7 +18,6 @@ const initialValue: AppContextProps = {
   sidebarSections: []
 };
 
-const url = 'http://localhost:8000'
 
 export const AppContext = createContext<AppContextProps>(initialValue);
 

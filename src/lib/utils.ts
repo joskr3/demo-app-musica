@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// const url = 'http://localhost:8000'
+export const url = 'http://127.0.0.1:8000/'
 
 // Function to GET data -> obtiene los datos de la API
 async function getData<T>(url: string, endpoint: string): Promise<T[]> {

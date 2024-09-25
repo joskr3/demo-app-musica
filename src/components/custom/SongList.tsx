@@ -3,7 +3,7 @@ import { AppContext } from '@/context/AppContext';
 import { Button } from '../ui/button';
 
 const SongList: React.FC = () => {
-  const { songs, deleteSong } = useContext(AppContext);
+  // const { songs, deleteSong } = useContext(AppContext);
 
   const handleDelete = async (id: number) => {
     await deleteSong(id);

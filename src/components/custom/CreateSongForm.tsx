@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
-import { createData } from '@/lib/utils';
+import { createData, url } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import type { Song } from '@/interfaces';
 
@@ -31,7 +31,7 @@ const CreateSongForm: React.FC = () => {
   // esta mutacion creará una  canción en la API(backend) -> POST - CREACION DE NUEVAS CANCIONES , USANDO  TANSTACK QUERY
   const mutationCrearData = useMutation({
     mutationKey: ['createSong'],
-    mutationFn: (data: Song) => createData<Song>('http://localhost:8000/', 'songs', data)
+      mutationFn: (data: Song) => createData<Song>(url, 'songs', data)
   })
 
   const form = useForm<SongFormData>({

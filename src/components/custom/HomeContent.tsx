@@ -1,15 +1,11 @@
 import SectionCarousel from './SectionCarousel';
 import type { Album, Playlist } from '@/interfaces';
 import { useQuery } from '@tanstack/react-query';
-import { getData } from '@/lib/utils';
+import { getData, url } from '@/lib/utils';
 
 
 const HomeContent = () => {
 
-  const url = 'http://localhost:8000'
-  // ################################################################################
-  //GET - consulta al backend para obtener los albums y playlists
-  // ################################################################################
 
   //consulta al backend para obtener los albums
   const { data: albums } = useQuery({
