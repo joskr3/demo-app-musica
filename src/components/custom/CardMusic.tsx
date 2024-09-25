@@ -10,7 +10,7 @@ interface CardMusicProps {
   height?: number;
 }
 
-const CardMusic: React.FC<CardMusicProps> = ({ url, titulo, subtitulo, width = 200, height = 200 }) => {
+const CardMusic: React.FC<CardMusicProps> = ({ url = 'https://via.placeholder.com/300x500', titulo, subtitulo, width = 200, height = 200 }) => {
   return (
     <Card>
       <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>

@@ -14,9 +14,9 @@ export interface SidebarSection {
 // Tipos existentes
 export interface Playlist {
   id: number;
-  name: string;
-  description: string;
-  type: string; // "Playlist" o "Album"
+  nombre: string;
+  descripcion: string;
+  tipo: string; // "Playlist" o "Album"
 }
 
 export interface Song {
@@ -28,7 +28,7 @@ export interface Song {
 
 export interface Album {
   id: number;
-  title: string;
-  artist: string;
-  year: number;
+  titulo: string;
+  artista: string;
+  anio: number;
 }

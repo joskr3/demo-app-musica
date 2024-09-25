@@ -17,7 +17,7 @@ async function getData<T>(url: string, endpoint: string): Promise<T[]> {
     }
     //console.log(response)
     const data = (await response.json()) as T[];
-    console.log(data)
+    //console.log(data)
     return data;
   } catch (error) {
     console.error(`Error fetching ${endpoint}:`, error);

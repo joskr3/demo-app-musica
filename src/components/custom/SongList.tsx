@@ -14,7 +14,7 @@ const SongList: React.FC = () => {
   // };
 
   const { isPending, error, data: songs } = useQuery({
-    queryKey: ['sidebarSectionsQuery'],
+    queryKey: ['songsQuery'],
     queryFn: () => getData<Song>(url, 'canciones')
   })
 

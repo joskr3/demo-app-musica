@@ -42,21 +42,21 @@ const TabsMenu = () => {
   const songsMock: Song[] = [
     {
       id: 1,
-      title: 'Title 1',
-      description: 'Description 1',
-      artwork_url: 'https://via.placeholder.com/300x500'
+      titulo: 'Title 1',
+      descripcion: 'Description 1',
+      url_portada: 'https://via.placeholder.com/300x500'
     },
     {
       id: 2,
-      title: 'Title 2',
-      description: 'Description 2',
-      artwork_url: 'https://via.placeholder.com/300x500'
+      titulo: 'Title 2',
+      descripcion: 'Description 2',
+      url_portada: 'https://via.placeholder.com/300x500'
     },
     {
       id: 3,
-      title: 'Title 3',
-      description: 'Description 3',
-      artwork_url: 'https://via.placeholder.com/300x500'
+      titulo: 'Title 3',
+      descripcion: 'Description 3',
+      url_portada: 'https://via.placeholder.com/300x500'
     },
   ]
 
@@ -77,8 +77,8 @@ const TabsMenu = () => {
               <li key={song?.id} className="mb-2">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="text-xl">{song.title}</h3>
-                    <p>{song?.description}</p>
+                    <h3 className="text-xl">{song.titulo}</h3>
+                    <p>{song?.descripcion}</p>
                   </div>
                   <div>
                   </div>
