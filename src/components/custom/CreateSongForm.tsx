@@ -13,48 +13,55 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
-import { createData, url } from '@/lib/utils';
+import { url } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import type { Song } from '@/interfaces';
 
 const songSchema = z.object({
-  id: z.number(),
-  title: z.string().min(1, 'El título es requerido'),
-  description: z.string().min(1, 'La descripción es requerida'),
-  artwork_url: z.string().url('Debe ser una URL válida'),
+  titulo: z.string().min(1, 'El título es requerido'),
+  descripcion: z.string().min(1, 'La descripción es requerida'),
+  url_portada: z.string().url('Debe ser una URL válida')
 });
 
 type SongFormData = z.infer<typeof songSchema>;
 
 const CreateSongForm: React.FC = () => {
-  // const { createSong } = useContext(AppContext);
-  // esta mutacion creará una  canción en la API(backend) -> POST - CREACION DE NUEVAS CANCIONES , USANDO  TANSTACK QUERY
-  const mutationCrearData = useMutation({
-    mutationKey: ['createSong'],
-      mutationFn: (data: Song) => createData<Song>(url, 'songs', data)
+  const mutation = useMutation({
+    mutationFn: (cancion: Omit<Song, 'id'>) => {
+      return fetch(
+        `${url}/canciones`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(cancion),
+        }
+      )
+    },
   })
+
+
 
   const form = useForm<SongFormData>({
     resolver: zodResolver(songSchema),
     defaultValues: {
-      id: 2345678190,
-      title: '',
-      description: '',
-      artwork_url: '',
+      titulo: '',
+      descripcion: '',
+      url_portada: ''
     },
   });
 
   const onSubmit = async (values: SongFormData) => {
-    await mutationCrearData.mutateAsync(values);
+    await mutation.mutateAsync(values);
     form.reset();
   };
+
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="title"
+          name="titulo"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Título</FormLabel>
@@ -67,7 +74,7 @@ const CreateSongForm: React.FC = () => {
         />
         <FormField
           control={form.control}
-          name="description"
+          name="descripcion"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Descripción</FormLabel>
@@ -80,7 +87,7 @@ const CreateSongForm: React.FC = () => {
         />
         <FormField
           control={form.control}
-          name="artwork_url"
+          name="url_portada"
           render={({ field }) => (
             <FormItem>
               <FormLabel>URL de la imagen</FormLabel>
@@ -91,7 +98,7 @@ const CreateSongForm: React.FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Crear Canción</Button>
+        <Button type="submit">Crear canción</Button>
       </form>
     </Form>
   );

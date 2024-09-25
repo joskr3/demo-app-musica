@@ -3,15 +3,35 @@
 import type { Song } from '@/interfaces';
 import { Button } from '../ui/button';
 import { getData, url } from '@/lib/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 const SongList: React.FC = () => {
-  // const { songs, deleteSong } = useContext(AppContext);
 
-  // const handleDelete = async (id: number) => {
-  //   await deleteSong(id);
-  // };
+  const updateMutation = useMutation({
+    mutationFn: (cancion: Song) => {
+      return fetch(
+        `${url}/canciones/${cancion.id}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(cancion),
+        }
+      )
+    },
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) => {
+      return fetch(
+        `${url}/canciones/${id}`,
+        {
+          method: 'DELETE',
+        }
+      )
+    },
+  })
+
 
   const { isPending, error, data: songs } = useQuery({
     queryKey: ['songsQuery'],
@@ -64,20 +84,22 @@ const SongList: React.FC = () => {
     <div>
       <h2 className="text-2xl mb-4">Canciones</h2>
       <ul>
-        {songs.map(({ id,titulo,descripcion,url_portada }) => (
-          <li key={id} className="mb-2">
+        {songs.map((cancionActualizada: Song) => (
+          <li key={cancionActualizada.id} className="mb-2">
             <div className="flex justify-between items-center">
               <div>
-                <h3 className="text-xl">{titulo || ''}</h3>
-                <p>{descripcion || ''}</p>
-                <p>{url_portada || ''}</p>
+                <h3 className="text-xl">{cancionActualizada.titulo || ''}</h3>
+                <p>{cancionActualizada.descripcion || ''}</p>
+                <p>{cancionActualizada.url_portada || ''}</p>
               </div>
               <div>
                 {/* Botones para editar y eliminar */}
-                <Button onClick={() => {/* implementar edición */ }} className="mr-2">
+                <Button onClick={() => {
+                  updateMutation.mutate({ ...cancionActualizada, id: cancionActualizada.id, titulo: 'titulo Actualizado', descripcion: 'descripcion Actualizada', url_portada: 'url_portada Actualizada' })
+                }} className="mr-2">
                   Editar
                 </Button>
-                {/* <Button onClick={() => handleDelete(song.id)}>Eliminar</Button> */}
+                <Button onClick={() => deleteMutation.mutate(cancionActualizada?.id || 0)}>Eliminar</Button>
               </div>
             </div>
           </li>

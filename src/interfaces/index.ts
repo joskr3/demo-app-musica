@@ -20,7 +20,7 @@ export interface Playlist {
 }
 
 export interface Song {
-  id: number;
+  id?: number;
   titulo: string;
   descripcion: string;
   url_portada: string;

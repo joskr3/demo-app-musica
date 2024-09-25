@@ -10,7 +10,7 @@ const LoginPage = () => {
   const mutation = useMutation({
     mutationFn: (nuevoUsuario: Usuario) => {
       return fetch(
-        `${url}/login`,
+        `${url}/login`, 
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
