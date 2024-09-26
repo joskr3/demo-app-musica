@@ -1,48 +1,61 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import type { Usuario } from "@/interfaces"
-import { url } from "@/lib/utils"
-import { useMutation } from "@tanstack/react-query"
-import { useState } from "react"
+// src/components/LoginPage.tsx
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { Usuario } from "@/interfaces";
+import { url } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { useAuth } from '@/context/AuthContext';
 
 const LoginPage = () => {
+  const { login } = useAuth();
+
+  // Estado local para manejar errores de autenticación
+  const [error, setError] = useState<string | null>(null);
+
+  // Crear la mutación para el login
   const mutation = useMutation({
-    mutationFn: (nuevoUsuario: Usuario) => {
-      return fetch(
-        `${url}/login`, 
+    mutationKey: ['login'], // Clave única para la mutación
+    mutationFn: async (nuevoUsuario: Usuario) => {
+      const response = await fetch(
+        `${url}/login`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(nuevoUsuario),
         }
-      )
+      );
+      if (!response.ok) {
+        throw new Error('Error en la autenticación'); // Error lanzado si la respuesta no es exitosa
+      }
+      return response.json(); // Devolver los datos en formato JSON
     },
-  })
+    onSuccess: (data) => {
+      login(data.message); // Llamar a la función login del contexto
+      setError(null); // Limpiar cualquier error anterior
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        setError(error.message); // Establecer el mensaje de error
+      } else {
+        setError('Error desconocido en la autenticación'); // Error genérico
+      }
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     const nuevoUsuario: Usuario = {
       nombre_usuario: formData.get('nombre_usuario') as string,
       password: formData.get('password') as string,
-    }
-    console.log(nuevoUsuario)
-    mutation.mutate(nuevoUsuario)
-  }
+    };
+    mutation.mutate(nuevoUsuario);
+  };
 
-  const [user, setUser] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setUser(value)
-  }
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setPassword(value)
-  }
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <div className="w-full lg:grid h-dvh lg:grid-cols-2">
@@ -54,53 +67,35 @@ const LoginPage = () => {
               Enter your email below to login to your account
             </p>
           </div>
-          <div className="grid gap-4">
-            <form onSubmit={handleSubmit}>
-              <div className="grid gap-2">
-                <Label htmlFor="nombre_usuario">Username</Label>
-                <Input
-                  id="nombre_usuario"
-                  name="nombre_usuario"
-                  type="text"
-                  placeholder="Nombre usuario"
-                  value={user}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="/forgot-password"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
-            </form>
-            <Button variant="outline" className="w-full">
-              Login with Google
+          <form onSubmit={handleSubmit}>
+            <div className="grid gap-2">
+              <Label htmlFor="nombre_usuario">Username</Label>
+              <Input
+                id="nombre_usuario"
+                name="nombre_usuario"
+                type="text"
+                placeholder="Nombre usuario"
+                value={user}
+                onChange={(e) => setUser(e.target.value)}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            {error && <p className="text-red-500">{error}</p>} {/* Mostrar el mensaje de error */}
+            <Button type="submit" className="w-full" disabled={mutation.isPending}>
+              {mutation.isPending ? 'Loading...' : 'Login'}
             </Button>
-          </div>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <a href="#" className="underline">
-              Sign up
-            </a>
-          </div>
+          </form>
         </div>
       </div>
       <div className="hidden bg-muted lg:block">
@@ -113,7 +108,7 @@ const LoginPage = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
